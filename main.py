@@ -88,11 +88,45 @@ def test_get_longest_average_below ():
     assert get_longest_average_below([50],10) is None
 
 
+def divizibil_k (list,k):
+    '''
+    Functia determina daca o lista are toate elementele divizibile cu k .
+    :param list: Lista de nr intregi .
+    :param k: Numarul cu care verificam daca elementele din lista sunt divizibile .
+    :return: Returneaza True daca toate elementele sunt divizibile cu k sau False daca acestea nu sunt divizibile cu k .
+    '''
+    for i in list:
+        if i % k != 0:
+            return False
+    return True
+
+
+def get_longest_div_k (list,k):
+    '''
+     Functia determina cea mai lunga subsecventa in care toate elementele sunt divizibile cu un numar k .
+    :param list: Lista de nr intregi .
+    :param k: Numarul cu care verificam daca elementele din lista sunt divizibile .
+    :return: Cea mai lunga subsecventa in care toate elementele sunt divizibile cu un numar k citit .
+    '''
+    subsecventa_max = []
+    for i in range(len(list)):
+        for j in range(i, len(list)):
+            if divizibil_k(list[i:j + 1], k) is True and len(subsecventa_max) < len(list[i:j + 1]):
+                subsecventa_max = list[i:j + 1]
+    return subsecventa_max
+
+
+def test_get_longest_div_k ():
+    assert get_longest_div_k([10,20,30],10) == [10,20,30]
+    assert get_longest_div_k([7,13,10],3) is None
+
+
 def printMenu():
     print ('1. Citire date')
     print ('2. Determinare cea mai lungă subsecvență in care toate numerele sunt pare')
     print ('3. Determinare cea mai lungă subsecvență in care media a numerelor nu depășește o valoare citită')
-    print ('4. Iesire')
+    print ('4. Determinare cea mai lungă subsecvență in care toate numerele sunt divizibile cu un numar citit')
+    print ('5. Iesire')
 
 def main():
     list = []
@@ -110,9 +144,12 @@ def main():
             print(get_longest_average_below((list), average))
 
         elif optiune == '4':
+            k = int(input("Valoarea cu care verificati daca numerele sunt divizibile: "))
+            print(get_longest_div_k((list), k))
+
+        elif optiune == '5':
             break
         else:
             print("Optiune gresita! Reincercati!")
-
 
 main()
